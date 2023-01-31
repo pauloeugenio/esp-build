@@ -1,0 +1,4 @@
+id=ge117
+actual_spiffs_version=2.2.0
+next_spiffs_version=2.2.1
+spiffs_version=22.00
