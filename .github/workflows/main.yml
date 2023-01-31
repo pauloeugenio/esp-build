@@ -16,3 +16,4 @@ jobs:
       uses: Legion2/arduino-builder-action@v2.0.0
       with:
         board: "esp32"
+        path: 'Medidor_v2.2.0'
