@@ -1,14 +1,12 @@
-image: ubuntu:18.04
- 
-before_script:
-  - ./setup-build-env.sh
- 
+json
+image: python:2.7
+
 stages:
-  - build
- 
-compile:
-  stage: build
-  tags:
-    - docker
-  script:
-    - arduino-cli compile --fqbn esp32:esp32:esp32 -o ignored.bin robot.ino
+- build
+
+before_script:
+- "pip install -U platformio"
+
+job:
+stage: build
+script: "platformio run"
