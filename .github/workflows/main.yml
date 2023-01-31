@@ -4,7 +4,12 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        example: [examples/Bluetooth/PS3SPP/PS3SPP.ino, examples/pl2303/pl2303_gps/pl2303_gps.ino]
 
     steps:
       - uses: actions/checkout@v3
@@ -20,5 +25,12 @@ jobs:
       - name: Install PlatformIO Core
         run: pip install --upgrade platformio
 
-      - name: Build PlatformIO Project
-        run: pio run
+      - name: Download external library
+        run: |
+          wget https://github.com/xxxajk/spi4teensy3/archive/master.zip -O /tmp/spi4teensy3.zip
+          unzip /tmp/spi4teensy3.zip -d /tmp
+
+      - name: Run PlatformIO
+        run: pio ci --lib="." --lib="/tmp/spi4teensy3-master" --board=uno --board=teensy31 --board=due
+        env:
+          PLATFORMIO_CI_SRC: ${{ matrix.example }}
