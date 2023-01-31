@@ -1,19 +1,14 @@
-name: CI
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-  workflow_dispatch:
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - name: Build all example sketches
-      uses: Legion2/arduino-builder-action@v2.0.0
-      with:
-        board: "esp32"
-        path: 'Medidor_v2.2.0'
+image: ubuntu:18.04
+ 
+before_script:
+  - ./setup-build-env.sh
+ 
+stages:
+  - build
+ 
+compile:
+  stage: build
+  tags:
+    - docker
+  script:
+    - arduino-cli compile --fqbn esp32:esp32:esp32 -o ignored.bin robot.ino
